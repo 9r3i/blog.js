@@ -1,6 +1,7 @@
 /**
- * gaino.blog
- * ~ one of gaino apps
+ * blog.js
+ * ~ blog for website and blog
+ * ~ one of gaino's apps
  * authored by 9r3i
  * https://github.com/9r3i/blog.js
  * started at november 21st 2023
@@ -160,7 +161,7 @@ this.requestData=async function(table){
   host='https://api.github.com/repos',
   limit=this.db.config.host==host?0x64:1;
   for(let page=1;page<=limit;page++){
-    let temp=await this.db.request(table);
+    let temp=await this.db.request(table,page);
     if(temp&&typeof temp==='object'){
       data={...data,...temp};
       if(Object.keys(temp).length<30){
