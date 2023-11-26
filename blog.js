@@ -157,13 +157,13 @@ this.start=async function(a,b,c){
 };
 /* request data */
 this.requestData=async function(table){
-  let data={},
+  let data=[],
   host='https://api.github.com/repos',
   limit=this.db.config.host==host?0x64:1;
   for(let page=1;page<=limit;page++){
     let temp=await this.db.request(table,page);
     if(temp&&typeof temp==='object'){
-      data={...data,...temp};
+      data=[...data,...Object.values(temp)];
       if(Object.keys(temp).length<30){
         break;
       }
