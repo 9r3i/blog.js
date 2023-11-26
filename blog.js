@@ -2,7 +2,7 @@
  * gaino.blog
  * ~ one of gaino apps
  * authored by 9r3i
- * https://github.com/9r3i/giano.blog
+ * https://github.com/9r3i/blog.js
  * started at november 21st 2023
  * requires:
  *   - virtual.js - https://github.com/9r3i/virtual.js - v1.0.0
