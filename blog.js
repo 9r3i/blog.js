@@ -22,7 +22,7 @@
 ;function blog(g,v){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.0.0',
+  value:'1.0.1',
   writable:false,
 });
 /* the virtual */
@@ -207,8 +207,8 @@ this.loader=function(str,cent){
   if(span&&progress){
     if(typeof cent==='number'&&cent!==NaN){
       progress.max=100;
-      progress.value=cent;
-      span.innerText=cent+'% '+str;
+      progress.value=parseInt(cent);
+      span.innerText=parseInt(cent)+'% '+str;
     }else{
       span.innerText=str;
     }return;
