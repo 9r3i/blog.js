@@ -10,19 +10,11 @@
  *   - gaino.js   - https://github.com/9r3i/gaino.js   - v1.0.0
  *   - router.js  - https://github.com/9r3i/router.js  - v2.0.2
  *   - parser.js  - https://github.com/9r3i/parser.js  - v1.2.6
- *   - 
- *   - 
- *   - github api (module)     -- free
- *   - firebase (module)       -- free
- *   - api (self building)     -- needs more time to build
- *   - ldb, kdb, sdb (self library) -- ready
- *   - sse (server send event) -- needs a server
- *   - ws (websocket)          -- needs a vps
  */
 ;function blog(g,v){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.0.1',
+  value:'1.2.0',
   writable:false,
 });
 /* the virtual */
@@ -72,7 +64,26 @@ this.init=async function(chost){
 /* start the blog */
 this.start=async function(a,b,c){
   let app=this.virtual;
-  /* put loader */
+  /* check username and path */
+  if(this.config.database.username=='___GITHUB_USER___'
+    &&this.config.database.name=='___GITHUB_PUBLIC_REPO___'){
+    let ptrn=/^\/([^\/]+)\/([^\/]+)\/?$/i,
+    gh=window.location.pathname.match(ptrn);
+    if(gh){
+      this.config.database.username=gh[1];
+      this.config.database.name=gh[2];
+      this.config.across=true;
+      document.querySelector('title').textContent=gh[1]+'/'+gh[2];
+    }else if(window.location.pathname=='/'){
+      this.config.database.username='9r3i';
+      this.config.database.name='gaino-blog-data';
+      this.config.across=false;
+      document.querySelector('title').textContent='9r3i\\hunter';
+    }else{
+      alert('Error: Invalid pathname.');
+      return;
+    }
+  }
   /* initialize database */
   let driver=this.config.database.driver
     &&typeof window[this.config.database.driver]==='function'
@@ -88,12 +99,14 @@ this.start=async function(a,b,c){
     []  /* footer */
   );
   /* initialize data */
-  let rawData=await app.get(this.config.database.name),
+  let dbpath=this.config.database.username+'/'
+    +this.config.database.name,
+  rawData=await app.get(dbpath),
   isUpdated=false,
   data=this.gaino.parseJSON(rawData);
   if(!data){
     data=await this.requestData();
-    app.put(this.config.database.name,JSON.stringify(data));
+    app.put(dbpath,JSON.stringify(data));
     isUpdated=true;
   }
   window._GLOBAL.data=data;
@@ -151,7 +164,7 @@ this.start=async function(a,b,c){
   /* silent update for data */
   if(!isUpdated){
     data=await this.requestData();
-    app.put(this.config.database.name,JSON.stringify(data));
+    app.put(dbpath,JSON.stringify(data));
     window._GLOBAL.data=data;
   }
 };
