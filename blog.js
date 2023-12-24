@@ -14,7 +14,7 @@
 ;function blog(g,v){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.2.0',
+  value:'1.2.1',
   writable:false,
 });
 /* the virtual */
@@ -31,6 +31,9 @@ Object.defineProperty(this,'gaino',{
 this.config={};
 /* initialize as constructor */
 this.init=async function(chost){
+  if(typeof eloader==='function'){
+    (new eloader).fromProgressBar();
+  }
   let app=this.virtual,
   cfile=chost.match(/([^\/]+)$/)[1];
   app.files[cfile]=chost,
