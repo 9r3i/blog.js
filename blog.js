@@ -14,7 +14,7 @@
 ;function blog(g,v){
 /* the version */
 Object.defineProperty(this,'version',{
-  value:'1.2.1',
+  value:'1.3.0',
   writable:false,
 });
 /* the virtual */
@@ -136,7 +136,8 @@ this.start=async function(a,b,c){
     file=prefix+'templates/'+name,
     text=await app.get(file);
     if(!text||!theme.save){
-      text=await this.gaino.fetch(tempURL);
+      text=await fetch(tempURL)
+        .then(r=r.text()).catch(e=>alert(e));
       await app.put(file,text);
     }templates[name]=text;
   }
@@ -150,7 +151,8 @@ this.start=async function(a,b,c){
     if(!text||!theme.save){
       count++;
       this.loader('Loading... [file:'+file+']',50+(count/length*percent));
-      text=await this.gaino.fetch(fileURL);
+      text=await fetch(fileURL)
+        .then(r=r.text()).catch(e=>alert(e));
       await app.put(vfile,text);
     }
     if(text){
